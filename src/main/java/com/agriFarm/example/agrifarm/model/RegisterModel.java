@@ -15,6 +15,8 @@ public class RegisterModel {
 
     private String emailId;
 
+    private String message;
+
     public String getRegistrationId() {
         return registrationId;
     }
@@ -45,5 +47,13 @@ public class RegisterModel {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

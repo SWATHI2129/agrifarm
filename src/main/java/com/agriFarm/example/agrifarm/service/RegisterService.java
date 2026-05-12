@@ -22,6 +22,7 @@ public class RegisterService {
     public RegisterModel create(RegisterModel t){
 
         t.setRegistrationId(System.currentTimeMillis()+"");
+        t.setMessage("adding Your data");
         return registrationRepository.save(t);
     }
 
