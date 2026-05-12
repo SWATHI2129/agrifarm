@@ -1,0 +1,87 @@
+pipeline {
+
+    agent any
+
+    tools {
+        maven 'mvn3.9.15'
+    }
+
+    environment {
+        DOCKER_IMAGE = 'agrifarm1.2-app'
+        DOCKER_CONTAINER = 'agrifarm-container'
+    }
+
+    parameters {
+        choice(
+            name: 'ENVIRONMENT',
+            choices: ['testing','prod'],
+            description: 'Environment name'
+        )
+    }
+    stages {
+
+        stage('git clone') {
+
+            steps {
+
+                git branch: 'dev',
+                    url: 'https://github.com/SWATHI2129/agrifarm.git'
+            }
+        }
+
+        stage('list command') {
+
+            steps {
+
+                bat 'dir'
+            }
+        }
+
+        stage('maven test stage') {
+
+            when {
+
+                expression {
+                    params.ENVIRONMENT == "testing"
+                }
+            }
+
+            steps {
+
+                bat 'mvn test'
+            }
+        }
+
+        stage('maven build stage') {
+
+            steps {
+
+                bat 'mvn clean install -DskipTests=true'
+            }
+        }
+
+        stage('Docker Compose Down') {
+
+            steps {
+
+                bat 'docker compose down'
+            }
+        }
+
+        stage('Docker Compose Build & Up') {
+
+            steps {
+
+                bat 'docker compose up -d --build'
+            }
+        }
+
+        stage('Docker Verify') {
+
+            steps {
+
+                bat 'docker ps'
+            }
+        }
+    }
+}
