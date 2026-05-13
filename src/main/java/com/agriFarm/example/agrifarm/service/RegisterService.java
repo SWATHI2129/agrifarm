@@ -18,7 +18,6 @@ public class RegisterService {
         this.registrationRepository = registrationRepository;
     }
 
-
     public RegisterModel create(RegisterModel t){
 
         t.setRegistrationId(System.currentTimeMillis()+"");
