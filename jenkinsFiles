@@ -1,7 +1,9 @@
 pipeline {
 
      agent any
-
+ options {
+        skipDefaultCheckout(true)
+    }
     environment {
         DOCKER_IMAGE = 'agrifarm1.2-app'
         DOCKER_CONTAINER = 'agrifarm-container'
