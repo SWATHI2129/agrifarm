@@ -1,9 +1,11 @@
 pipeline {
 
-     agent none
- options {
+    agent none
+
+    options {
         skipDefaultCheckout(true)
     }
+
     environment {
         DOCKER_IMAGE = 'agrifarm1.2-app'
         DOCKER_CONTAINER = 'agrifarm-container'
@@ -16,10 +18,13 @@ pipeline {
             description: 'Environment name'
         )
     }
+
     stages {
 
         stage('git clone') {
-agent any
+
+            agent any
+
             steps {
 
                 git branch: 'dev',
@@ -28,7 +33,9 @@ agent any
         }
 
         stage('list command') {
-agent any
+
+            agent any
+
             steps {
 
                 bat 'dir'
@@ -38,12 +45,12 @@ agent any
         stage('maven test stage') {
 
             when {
-
                 expression {
                     params.ENVIRONMENT == "testing"
                 }
             }
- agent {
+
+            agent {
                 label 'maven-agent'
             }
 
@@ -54,7 +61,8 @@ agent any
         }
 
         stage('maven build stage') {
- agent {
+
+            agent {
                 label 'maven-agent'
             }
 
@@ -65,7 +73,9 @@ agent any
         }
 
         stage('Docker Compose Down') {
-agent any
+
+            agent any
+
             steps {
 
                 bat 'docker compose down'
@@ -73,7 +83,9 @@ agent any
         }
 
         stage('Docker Compose Build & Up') {
-agent any
+
+            agent any
+
             steps {
 
                 bat 'docker compose up -d --build'
@@ -81,7 +93,9 @@ agent any
         }
 
         stage('Docker Verify') {
-agent any
+
+            agent any
+
             steps {
 
                 bat 'docker ps'
